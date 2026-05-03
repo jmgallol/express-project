@@ -3,45 +3,29 @@ name: Docker Image CI
 
 on:
 
-push:
+  push:
 
-branches: [ main ]
+    branches: [ main ]
 
-pull_request:
+  pull_request:
 
-branches: [ main ]
-
+    branches: [ main ]
 
 jobs:
 
+  build:
 
-build:
+    runs-on: ubuntu-latest
 
-
-runs-on: ubuntu-latest
-
-
-steps:
-
-- uses: actions/checkout@v4
-
-- name: docker login
-
-env:
-
-DOCKER_USER: ${{secrets.DOCKERHUB_USER}}
-
-DOCKER_PASS: ${{secrets.DOCKERHUB_PASS}}
-
-run: |
-
-docker login -u $DOCKER_USER -p $DOCKER_PASS
-
-- name: Build the Docker image
-
-run: docker build . --file Dockerfile --tag juanmagalo/randomquotes:latest
-
-
-- name: Docker Push
-
-run: docker push juanmagalo/randomquotes
+    steps:
+    - uses: actions/checkout@v4
+    - name: docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKERHUB_USER}}
+        DOCKER_PASS: ${{secrets.DOCKERHUB_PASS}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag juanmagalo/randomquotes:latest
+    - name: Docker Push
+      run: docker push juanmagalo/randomquotes
